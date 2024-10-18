@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 router.get("/name", async (req, res) => {
     const name = req.query.name;
     try {
-        const products = await Product.find({ nombre: new RegExp(name, "i") });
+        const products = await Product.find({ nombre: name });
         res.json(products);
     } catch (error) {
         res.status(500).json({ error: error.message });
