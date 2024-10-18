@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/products/name", async (req, res) => {
+router.get("/name", async (req, res) => {
     const name = req.query.name;
     try {
         const products = await Product.find({ nombre: new RegExp(name, "i") });
@@ -31,12 +31,12 @@ router.get("/products/name", async (req, res) => {
     }
 });
 
-router.get("/products/paginate", async (req, res) => {
+router.get("/paginate", async (req, res) => {
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
     const category = req.query.category;
 
-    if (cat) {
+    if (category) {
         try {
             const products = await Product.find({ categoria: category })
                 .skip(start)
@@ -53,7 +53,7 @@ router.get("/products/paginate", async (req, res) => {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
-    }else{
+    } else {
         try {
             const products = await Product.find().skip(start).limit(limit);
 
