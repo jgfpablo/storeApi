@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const constData = require("../models/constData");
+const ConstDataModel = require("../models/constData");
 
 router.post("/newConstData", async (req, res) => {
     try {
-        const constData = new constData(req.body);
+        const constData = new constDataModel(req.body);
         await constData.save();
         res.status(201).json(constData);
     } catch (error) {
@@ -14,7 +14,7 @@ router.post("/newConstData", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        const constData = await constData.find();
+        const constData = await constDataModel.find();
         res.json(constData);
     } catch (error) {
         res.status(500).json({ error: error.message });
