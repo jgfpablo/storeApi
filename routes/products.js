@@ -34,20 +34,40 @@ router.get("/products/name", async (req, res) => {
 router.get("/products/paginate", async (req, res) => {
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
+    const category = req.query.category;
 
-    try {
-        const products = await Product.find().skip(start).limit(limit);
+    if (cat) {
+        try {
+            const products = await Product.find({ categoria: category })
+                .skip(start)
+                .limit(limit);
 
-        const totalProducts = await Product.countDocuments();
+            const totalProducts = await Product.countDocuments();
 
-        res.json({
-            message: "Productos paginados",
-            status: "success",
-            total: totalProducts, // Número total de productos
-            data: products, // Productos paginados
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+            res.json({
+                message: "Productos paginados",
+                status: "success",
+                total: totalProducts, // Número total de productos
+                data: products, // Productos paginados
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }else{
+        try {
+            const products = await Product.find().skip(start).limit(limit);
+
+            const totalProducts = await Product.countDocuments();
+
+            res.json({
+                message: "Productos paginados",
+                status: "success",
+                total: totalProducts, // Número total de productos
+                data: products, // Productos paginados
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     }
 });
 
