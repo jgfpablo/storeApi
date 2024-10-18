@@ -21,6 +21,9 @@ app.use("/apiStore/products", productsRoutes);
 const categoryRoutes = require("./routes/categories");
 app.use("/apiStore/categories", categoryRoutes);
 
+const constData = require("./routes/constData");
+app.use("/apiStore/constData", constData);
+
 app.get("/", (req, res) => {
     res.send("¡Servidor Express funcionando!");
 });

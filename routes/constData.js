@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Category = require("../models/category");
+const constData = require("../models/constData");
 
-router.post("/category", async (req, res) => {
+router.post("/newConstData", async (req, res) => {
     try {
-        const category = new Category(req.body);
-        await category.save();
-        res.status(201).json(category);
+        const constData = new constData(req.body);
+        await constData.save();
+        res.status(201).json(constData);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -14,8 +14,8 @@ router.post("/category", async (req, res) => {
 
 router.get("/", async (req, res) => {
     try {
-        const category = await Category.find();
-        res.json(category);
+        const constData = await constData.find();
+        res.json(constData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
