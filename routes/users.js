@@ -11,11 +11,14 @@ const authenticateToken = require("../middlewares/authToken"); // Middleware de 
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
     try {
+        // Aquí puedes agregar validaciones para username y password si lo deseas
         const user = new User({ username, password });
         await user.save();
+
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1h",
         });
+
         res.status(201).json({ token });
     } catch (error) {
         res.status(400).json({ error: error.message });
