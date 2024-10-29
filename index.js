@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const authenticateToken = require("./middlewares/authToken");
 
 const app = express();
 
@@ -23,6 +24,10 @@ app.use("/apiStore/categories", categoryRoutes);
 
 const constData = require("./routes/constData");
 app.use("/apiStore/constData", constData);
+
+const user = require("./routes/users");
+app.use("/apiStore/users", user);
+// app.use("/apiStore/users", authenticateToken, user);
 
 app.get("/", (req, res) => {
     res.send("¡Servidor Express funcionando!");
