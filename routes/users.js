@@ -6,12 +6,12 @@ const router = express.Router();
 const authenticateToken = require("../middlewares/authToken"); // Middleware de autenticación
 
 // Registro
-
+///apiStore/user/register
 // router.post("/register", authenticateToken, async (req, res) => {
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
     try {
-        const user = new User({ username, email, password });
+        const user = new User({ username, password });
         await user.save();
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: "1h",
@@ -24,9 +24,9 @@ router.post("/register", async (req, res) => {
 
 // Inicio de sesión
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ username });
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(400).json({ error: "Credenciales incorrectas" });
         }
