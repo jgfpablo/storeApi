@@ -25,8 +25,8 @@ app.use("/apiStore/categories", categoryRoutes);
 const constData = require("./routes/constData");
 app.use("/apiStore/constData", constData);
 
-const user = require("./routes/users");
-app.use("/apiStore/users", user);
+const user = require("./routes/user");
+app.use("/apiStore/user", user);
 // app.use("/apiStore/users", authenticateToken, user);
 
 app.get("/", (req, res) => {
