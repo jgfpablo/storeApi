@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
 
         res.status(201).json({ token });
     } catch (error) {
-        return `Hola, soy tu_username. Ocurrió un error: [detalles del error] ${username}`;
+        res.status(400).json({ username: username, password: password });
     }
 });
 
