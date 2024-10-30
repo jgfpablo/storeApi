@@ -7,8 +7,8 @@ const authenticateToken = require("../middlewares/authToken"); // Middleware de 
 
 // Registro
 ///apiStore/user/register
-// router.post("/register", authenticateToken, async (req, res) => {
-router.post("/register", async (req, res) => {
+router.post("/register", authenticateToken, async (req, res) => {
+    //router.post("/register", async (req, res) => {
     const { username, password } = req.body;
     try {
         // Aquí puedes agregar validaciones para username y password si lo deseas
