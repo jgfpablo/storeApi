@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../models/category");
+const authenticateToken = require("../middlewares/authToken");
 
-router.post("/category", async (req, res) => {
+router.post("/category", authenticateToken, async (req, res) => {
     try {
         const category = new Category(req.body);
         await category.save();

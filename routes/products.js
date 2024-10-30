@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/product");
+const authenticateToken = require("../middlewares/authToken");
 
-router.post("/product", async (req, res) => {
+router.post("/product", authenticateToken, async (req, res) => {
     try {
         const product = new Product(req.body);
         await product.save();

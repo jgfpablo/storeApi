@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const ConstDataModel = require("../models/constData");
+const authenticateToken = require("../middlewares/authToken");
 
-router.post("/newConstData", async (req, res) => {
+router.post("/newConstData", authenticateToken, async (req, res) => {
     try {
         const constData = new ConstDataModel(req.body);
         await constData.save();
