@@ -44,7 +44,7 @@ router.get("/paginate", async (req, res) => {
                 .limit(limit);
 
             const totalProducts = await Product.countDocuments({
-                categories: category,
+                categoria: category, // Asegúrate de que el campo se llame 'categoria'
             });
 
             res.json({
