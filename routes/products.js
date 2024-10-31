@@ -48,6 +48,7 @@ router.get("/paginate", async (req, res) => {
             });
 
             res.json({
+                cosas: category,
                 message: "Productos paginados",
                 status: "success",
                 total: totalProducts, // Número total de productos
