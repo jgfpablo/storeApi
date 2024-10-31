@@ -43,10 +43,7 @@ router.get("/paginate", async (req, res) => {
                 .skip(start)
                 .limit(limit);
 
-            // const totalProducts = await Product.countDocuments({ category });
-            const totalProducts = db.products
-                .find({ category: category })
-                .count();
+            const totalProducts = await Product.countDocuments({ category });
 
             res.json({
                 message: "Productos paginados",
