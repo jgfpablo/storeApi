@@ -34,11 +34,17 @@ router.get("/name", async (req, res) => {
 
 router.get("/search", async (req, res) => {
     const name = req.query.name;
+    const start = parseInt(req.query.start) || 0; //indice
+    const limit = parseInt(req.query.limit) || 1; //limit
     try {
         // Usar una expresión regular para buscar nombres que contengan el texto
         const products = await Product.find({
             nombre: { $regex: name, $options: "i" }, // "i" hace la búsqueda insensible a mayúsculas y minúsculas
-        });
+        })
+            .skip(start)
+            .limit(limit);
+
+        totalProducts = products.length;
 
         res.json({
             message: "Productos paginados",
