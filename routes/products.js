@@ -44,7 +44,9 @@ router.get("/search", async (req, res) => {
             .skip(start)
             .limit(limit);
 
-        totalProducts = products.length;
+        const totalProducts = await Product.countDocuments({
+            nombre: { $regex: name, $options: "i" }, // Asegúrate de que el campo se llame 'categoria'
+        });
 
         res.json({
             message: "Productos paginados",
