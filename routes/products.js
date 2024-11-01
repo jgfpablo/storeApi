@@ -40,7 +40,12 @@ router.get("/search", async (req, res) => {
             nombre: { $regex: name, $options: "i" }, // "i" hace la búsqueda insensible a mayúsculas y minúsculas
         });
 
-        res.json(products);
+        res.json({
+            message: "Productos paginados",
+            status: "success",
+            total: totalProducts, // Número total de productos
+            data: products, // Productos paginados
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
