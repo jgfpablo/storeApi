@@ -32,6 +32,20 @@ router.get("/name", async (req, res) => {
     }
 });
 
+router.get("/search", async (req, res) => {
+    const name = req.query.name;
+    try {
+        // Usar una expresión regular para buscar nombres que contengan el texto
+        const products = await Product.find({
+            nombre: { $regex: name, $options: "i" }, // "i" hace la búsqueda insensible a mayúsculas y minúsculas
+        });
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get("/paginate", async (req, res) => {
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
@@ -48,7 +62,6 @@ router.get("/paginate", async (req, res) => {
             });
 
             res.json({
-                cosas: category,
                 message: "Productos paginados",
                 status: "success",
                 total: totalProducts, // Número total de productos
