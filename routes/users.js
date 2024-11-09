@@ -5,22 +5,10 @@ const User = require("../models/user");
 const router = express.Router();
 const authenticateToken = require("../middlewares/authToken"); // Middleware de autenticación
 
-// Registro
-///apiStore/user/register
 router.post("/register", authenticateToken, async (req, res) => {
-    const existingUser = await User.findOne({ username });
-
-    // if (existingUser) {
-    //     return res
-    //         .status(409)
-
-    //         .json({ message: "El nombre de usuario ya está en uso" });
-    // }
-
     //router.post("/register", async (req, res) => {
     const { username, password } = req.body;
     try {
-        // Aquí puedes agregar validaciones para username y password si lo deseas
         const user = new User({ username, password });
         await user.save();
 
@@ -29,9 +17,8 @@ router.post("/register", authenticateToken, async (req, res) => {
         });
 
         res.status(201).json({ token });
-        // res.status(201).json("cosa");
     } catch (error) {
-        res.status(400).json({ username: username, password: password });
+        res.status(400).json({ error: "error al crear usuario" });
     }
 });
 
