@@ -5,11 +5,11 @@ const authenticateToken = require("../middlewares/authToken");
 
 router.post("/product", authenticateToken, async (req, res) => {
     try {
-        const existingUser = await User.findOne(req.body.name);
+        const existingUser = await User.findOne(req.body.nombre);
         if (existingUser) {
             return res.status(409).json({ error: "El producto ya existe" });
         }
-
+        //git no me quiere tomar los cambios
         const product = new Product(req.body);
         await product.save();
         res.status(201).json(product);
