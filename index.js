@@ -8,13 +8,15 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-// app.use(cors());
-// app.use(express.json());
+const cors = require("cors");
+const express = require("express");
+
+// Habilitar CORS para todos los orígenes
 app.use(
     cors({
-        origin: "*",
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        allowedHeaders: ["Content-Type", "Authorization"],
+        origin: "*", // Permite solicitudes de cualquier origen
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Permite los métodos HTTP que necesites
+        allowedHeaders: ["Content-Type", "Authorization"], // Permite los encabezados necesarios
     })
 );
 
@@ -36,8 +38,8 @@ const constData = require("./routes/constData");
 app.use("/apiStore/constData", constData);
 
 const user = require("./routes/users");
-app.use("/apiStore/user", user);
-// app.use("/apiStore/users", authenticateToken, user);
+// app.use("/apiStore/user", user);
+app.use("/apiStore/users", authenticateToken, user);
 
 app.get("/", (req, res) => {
     res.send("¡Servidor Express funcionando!");
