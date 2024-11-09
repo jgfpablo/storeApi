@@ -9,6 +9,11 @@ router.post("/register", authenticateToken, async (req, res) => {
     //router.post("/register", async (req, res) => {
     const { username, password } = req.body;
     try {
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.status(409).json({ error: "El usuario ya existe" });
+        }
+
         const user = new User({ username, password });
         await user.save();
 
