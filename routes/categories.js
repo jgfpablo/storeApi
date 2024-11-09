@@ -5,6 +5,13 @@ const authenticateToken = require("../middlewares/authToken");
 
 router.post("/category", authenticateToken, async (req, res) => {
     try {
+        const existingUser = await Category.findOne({
+            nombre: req.body.nombre,
+        });
+        if (existingUser) {
+            return res.status(409).json({ error: "La categoria ya existe" });
+        }
+
         const category = new Category(req.body);
         await category.save();
         res.status(201).json(category);
