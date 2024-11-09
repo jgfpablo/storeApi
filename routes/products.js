@@ -6,7 +6,6 @@ const authenticateToken = require("../middlewares/authToken");
 router.post("/product", authenticateToken, async (req, res) => {
     try {
         const existingUser = await User.findOne(req.body.name);
-        console.log(req.body);
         if (existingUser) {
             return res.status(409).json({ error: "El producto ya existe" });
         }
@@ -15,7 +14,8 @@ router.post("/product", authenticateToken, async (req, res) => {
         await product.save();
         res.status(201).json(product);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ error: req.body });
+        error.message;
     }
 });
 
