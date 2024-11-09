@@ -10,11 +10,12 @@ const authenticateToken = require("../middlewares/authToken"); // Middleware de 
 router.post("/register", authenticateToken, async (req, res) => {
     const existingUser = await User.findOne({ username });
 
-    if (existingUser) {
-        return res
-            .status(409)
-            .json({ message: "El nombre de usuario ya está en uso" });
-    }
+    // if (existingUser) {
+    //     return res
+    //         .status(409)
+
+    //         .json({ message: "El nombre de usuario ya está en uso" });
+    // }
 
     //router.post("/register", async (req, res) => {
     const { username, password } = req.body;
