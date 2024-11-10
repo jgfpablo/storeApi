@@ -25,8 +25,9 @@ router.post("/delete", authenticateToken, async (req, res) => {
 
     try {
         // Busca y elimina la categoría
+        const { nombre } = req.body;
         const deletedCategory = await Category.findOneAndDelete({
-            nombre: nombre,
+            nombre,
         });
 
         if (!deletedCategory) {
