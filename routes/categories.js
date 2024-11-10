@@ -32,7 +32,7 @@ router.post("/delete", authenticateToken, async (req, res) => {
 
         if (!deletedCategory) {
             // Categoría no encontrada
-            return res.status(404).json({ alert: req.body.nombre });
+            return res.status(404).json({ alert: nombre });
         }
 
         // Aquí puedes agregar lógica adicional si necesitas manejar productos huérfanos
