@@ -20,6 +20,29 @@ router.post("/category", authenticateToken, async (req, res) => {
     }
 });
 
+router.post("/delete", authenticateToken, async (req, res) => {
+    const { nombre } = req.body; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
+
+    try {
+        // Busca y elimina la categoría
+        const deletedCategory = await Category.findOneAndDelete({
+            nombre: nombre,
+        });
+
+        if (!deletedCategory) {
+            return res.status(404).json({ alert: "Categoría no encontrada" });
+        }
+
+        // Aquí puedes agregar lógica adicional si necesitas manejar productos huérfanos
+        // Por ejemplo, podrías eliminar productos asociados a esta categoría:
+        // await Product.deleteMany({ categoria: id });
+
+        res.status(200).json({ alert: "Categoría eliminada exitosamente" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 router.get("/", async (req, res) => {
     try {
         const category = await Category.find();
