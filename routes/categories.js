@@ -21,7 +21,7 @@ router.post("/category", authenticateToken, async (req, res) => {
 });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    const nombre = req.body.nombre; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
+    const nombre = req.body; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
 
     try {
         // Busca y elimina la categoría
