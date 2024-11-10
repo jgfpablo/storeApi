@@ -21,7 +21,7 @@ router.post("/category", authenticateToken, async (req, res) => {
 });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    const { nombre } = req.body; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
+    const nombre = req.body.nombre; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
 
     try {
         // Busca y elimina la categoría
@@ -30,7 +30,8 @@ router.post("/delete", authenticateToken, async (req, res) => {
         });
 
         if (!deletedCategory) {
-            return res.status(404).json({ alert: "Categoría no encontrada" });
+            // Categoría no encontrada
+            return res.status(404).json({ alert: req.body });
         }
 
         // Aquí puedes agregar lógica adicional si necesitas manejar productos huérfanos
