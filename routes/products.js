@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/product");
 const authenticateToken = require("../middlewares/authToken");
+const product = require("../models/product");
 
 router.post("/product", authenticateToken, async (req, res) => {
     try {
@@ -104,6 +105,25 @@ router.get("/paginate", async (req, res) => {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
+    }
+});
+
+router.post("/delete", authenticateToken, async (req, res) => {
+    const nombre = req.body;
+
+    try {
+        const { nombre } = req.body;
+        const deletedCategory = await product.findOneAndDelete({
+            nombre,
+        });
+
+        if (!deletedCategory) {
+            return res.status(404).json({ alert: "Producto no encontrado" });
+        }
+
+        res.status(200).json({ alert: "Producto eliminado exitosamente" });
+    } catch (error) {
+        res.status(500).json({ error: `error` });
     }
 });
 
