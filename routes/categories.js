@@ -40,7 +40,8 @@ router.post("/delete", authenticateToken, async (req, res) => {
 
         res.status(200).json({ alert: "Categoría eliminada exitosamente" });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // error.message
+        res.status(500).json({ error: req.body });
     }
 });
 
