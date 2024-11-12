@@ -1,56 +1,15 @@
-// function calcularPrecio() {
-
-//     const constData = await ConstDataModel.find();
-//         res.json(constData);
-
-//      const KwH =
-//        (Number(this.dataConst![this.lengthDC]?.consumoKw) / 1000 / 60) *
-//        Number(this.tiempo);
-
-//      const costoEnergia = KwH * this.dataConst![this.lengthDC]?.costokwH!;
-
-//      const costoFilamento =
-//        (Number(this.peso) * Number(this.dataConst![this.lengthDC]?.filamento)) /
-//        1000;
-//      const depreciacion =
-//        (Number(this.dataConst![this.lengthDC]?.costImpr) /
-//          Number(this.dataConst![this.lengthDC]?.vidaUtil) /
-//          60) *
-//        Number(this.tiempo);
-//      const merma =
-//        (Number(this.peso) *
-//          (Number(this.dataConst![this.lengthDC]?.merma) / 100) *
-//          Number(this.dataConst![this.lengthDC]?.filamento)) /
-//        1000;
-//      const ganancia =
-//        (costoEnergia + costoFilamento + depreciacion + merma) *
-//        (this.dataConst![this.lengthDC]?.ganan! / 100);
-//      const gastos = costoEnergia + costoFilamento + depreciacion + merma;
-
-//      let total = gastos + ganancia;
-
-//      if (total < 200) {
-//        return (this.product.precio = 200);
-//      } else {
-//        return (this.product.precio = this.redondear(total));
-//      }
-//    }
-
-// calcularPrecio.js (Archivo util)
 const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
-const product = require("../models/product");
 
 async function calcularPrecio(products) {
     // Obtener el último registro de ConstDataModel
-    const constData = ConstDataModel.find();
+    const constData = await ConstDataModel.findOne().sort({ _id: -1 }); // Esperar el último documento
 
     if (!constData) {
         throw new Error("No se encontró constData");
     }
-    console.log(constData.filamento);
-    console.log(constData[0]);
 
-    console.log(constData);
+    console.log(constData); // Para verificar los datos de constData
+
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
@@ -93,13 +52,14 @@ async function calcularPrecio(products) {
 
                 // Asignar el precio al producto
                 products[index].precio = total;
-                console.log("el total es :" + total);
+                console.log("El total es:", total);
             } catch (error) {
                 console.error(error); // Loguear el error para diagnóstico
                 throw error; // Lanzar el error para ser manejado más arriba si es necesario
             }
         }
     } else {
+        // Si products no es un array, calcular precio para un único producto
         try {
             const KwH =
                 (Number(constData.consumoKw) / 1000 / 60) *
@@ -130,14 +90,14 @@ async function calcularPrecio(products) {
             }
 
             // Asignar el precio al producto
-            product[i].precio = total;
+            products.precio = total;
         } catch (error) {
             console.error(error); // Loguear el error para diagnóstico
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
         }
     }
 
-    console.log("se ejecuto la funcion");
+    console.log("Se ejecutó la función");
 
     return products; // Retornar los productos con los precios calculados
 }
