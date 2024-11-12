@@ -37,20 +37,23 @@
 //    }
 
 // calcularPrecio.js (Archivo util)
+const constData = require("../models/constData");
 const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
 const product = require("../models/product");
 
 async function calcularPrecio(products) {
     // Obtener el último registro de ConstDataModel
-    const constData = ConstDataModel.findOne().sort({
-        _id: -1,
-    }); // Obtener el último documento
+    // const constData = ConstDataModel.findOne().sort({
+    //     _id: -1,
+    // }); // Obtener el último documento
 
-    if (!constData) {
-        throw new Error("No se encontró constData");
-    }
+    // if (!constData) {
+    //     throw new Error("No se encontró constData");
+    // }
 
-    console.log(constData[0].costoFilamento);
+    const products = await Product.find();
+
+    console.log(constData[constData.length - 1].costoFilamento);
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
