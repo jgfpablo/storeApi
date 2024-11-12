@@ -8,7 +8,7 @@ async function calcularPrecio(products) {
         throw new Error("No se encontró constData");
     }
 
-    console.log(constData); // Para verificar los datos de constData
+    console.log(constData.consumoKw + "const datovich"); // Para verificar los datos de constData
 
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
