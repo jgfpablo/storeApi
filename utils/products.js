@@ -42,9 +42,7 @@ const product = require("../models/product");
 
 async function calcularPrecio(products) {
     // Obtener el último registro de ConstDataModel
-    const constData = ConstDataModel.findOne().sort({
-        _id: -1,
-    }); // Obtener el último documento
+    const constData = ConstDataModel.find();
 
     if (!constData) {
         throw new Error("No se encontró constData");
