@@ -43,6 +43,8 @@ async function calcularPrecio(products) {
 
                 let total = gastos + ganancia;
 
+                console.log("el total es  " + total);
+
                 // Asegurar que el precio no sea menor que 200
                 if (total < 200) {
                     total = 200;
@@ -52,7 +54,6 @@ async function calcularPrecio(products) {
 
                 // Asignar el precio al producto
                 products[index].precio = total;
-                console.log("El total es:", total);
             } catch (error) {
                 console.error(error); // Loguear el error para diagnóstico
                 throw error; // Lanzar el error para ser manejado más arriba si es necesario
@@ -96,8 +97,6 @@ async function calcularPrecio(products) {
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
         }
     }
-
-    console.log("Se ejecutó la función");
 
     return products; // Retornar los productos con los precios calculados
 }
