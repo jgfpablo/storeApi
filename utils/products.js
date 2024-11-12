@@ -40,10 +40,68 @@
 const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
 
 async function calcularPrecio(products) {
-    for (let index = 0; index < products.length; index++) {
+    if (Array.isArray(products)) {
+        for (let index = 0; index < products.length; index++) {
+            try {
+                // Obtener el último registro de ConstDataModel
+                const constData = await ConstDataModel.findOne().sort({
+                    _id: -1,
+                }); // Obtener el último documento
+
+                if (!constData) {
+                    throw new Error("No se encontró constData");
+                }
+
+                // Realizar los cálculos basados en los datos obtenidos
+                const KwH =
+                    (Number(constData.consumoKw) / 1000 / 60) *
+                    calcularTiempo(
+                        products[index].horas,
+                        products[index].minutos
+                    );
+                const costoEnergia = KwH * constData.costokwH;
+                const costoFilamento =
+                    (Number(products[index].peso) *
+                        Number(constData.filamento)) /
+                    1000;
+                const depreciacion =
+                    (Number(constData.costImpr) /
+                        Number(constData.vidaUtil) /
+                        60) *
+                    Number(products[index].tiempo);
+                const merma =
+                    (Number(products[index].peso) *
+                        (Number(constData.merma) / 100) *
+                        Number(constData.filamento)) /
+                    1000;
+                const ganancia =
+                    (costoEnergia + costoFilamento + depreciacion + merma) *
+                    (constData.ganan / 100);
+                const gastos =
+                    costoEnergia + costoFilamento + depreciacion + merma;
+
+                let total = gastos + ganancia;
+
+                // Asegurar que el precio no sea menor que 200
+                if (total < 200) {
+                    total = 200;
+                } else {
+                    total = redondear(total); // Redondear al múltiplo de 50 más cercano
+                }
+
+                // Asignar el precio al producto
+                products[index].precio = total;
+            } catch (error) {
+                console.error(error); // Loguear el error para diagnóstico
+                throw error; // Lanzar el error para ser manejado más arriba si es necesario
+            }
+        }
+    } else {
         try {
             // Obtener el último registro de ConstDataModel
-            const constData = await ConstDataModel.findOne().sort({ _id: -1 }); // Obtener el último documento
+            const constData = await ConstDataModel.findOne().sort({
+                _id: -1,
+            }); // Obtener el último documento
 
             if (!constData) {
                 throw new Error("No se encontró constData");
@@ -52,16 +110,15 @@ async function calcularPrecio(products) {
             // Realizar los cálculos basados en los datos obtenidos
             const KwH =
                 (Number(constData.consumoKw) / 1000 / 60) *
-                calcularTiempo(products[index].horas, products[index].minutos);
+                calcularTiempo(products.horas, products.minutos);
             const costoEnergia = KwH * constData.costokwH;
             const costoFilamento =
-                (Number(products[index].peso) * Number(constData.filamento)) /
-                1000;
+                (Number(products.peso) * Number(constData.filamento)) / 1000;
             const depreciacion =
                 (Number(constData.costImpr) / Number(constData.vidaUtil) / 60) *
-                Number(products[index].tiempo);
+                Number(products.tiempo);
             const merma =
-                (Number(products[index].peso) *
+                (Number(products.peso) *
                     (Number(constData.merma) / 100) *
                     Number(constData.filamento)) /
                 1000;
@@ -80,7 +137,7 @@ async function calcularPrecio(products) {
             }
 
             // Asignar el precio al producto
-            products[index].precio = total;
+            products.precio = total;
         } catch (error) {
             console.error(error); // Loguear el error para diagnóstico
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
