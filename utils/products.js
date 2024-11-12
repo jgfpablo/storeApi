@@ -38,6 +38,7 @@
 
 // calcularPrecio.js (Archivo util)
 const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
+const product = require("../models/product");
 
 async function calcularPrecio(products) {
     if (Array.isArray(products)) {
@@ -137,8 +138,8 @@ async function calcularPrecio(products) {
             }
 
             // Asignar el precio al producto
-            products.precio = total;
-            console.log(total);
+            product[i].precio = total;
+            console.log("el total es :" + total);
         } catch (error) {
             console.error(error); // Loguear el error para diagnóstico
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
