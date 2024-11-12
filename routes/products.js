@@ -20,15 +20,18 @@ router.post("/product", authenticateToken, async (req, res) => {
     }
 });
 
+//all products
 router.get("/", async (req, res) => {
     try {
         const products = await Product.find();
-        res.json(products);
+        const productosConPrecios = await calcularPrecio(products);
+        res.json(productosConPrecios);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
+//product by name
 router.get("/name", async (req, res) => {
     const name = req.query.name;
     try {
@@ -39,27 +42,29 @@ router.get("/name", async (req, res) => {
     }
 });
 
+//productos paginados
 router.get("/search", async (req, res) => {
     const name = req.query.name;
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
     try {
-        // Usar una expresión regular para buscar nombres que contengan el texto
         const products = await Product.find({
-            nombre: { $regex: name, $options: "i" }, // "i" hace la búsqueda insensible a mayúsculas y minúsculas
+            nombre: { $regex: name, $options: "i" },
         })
             .skip(start)
             .limit(limit);
 
         const totalProducts = await Product.countDocuments({
-            nombre: { $regex: name, $options: "i" }, // Asegúrate de que el campo se llame 'categoria'
+            nombre: { $regex: name, $options: "i" },
         });
+
+        const productosConPrecios = await calcularPrecio(totalProducts);
 
         res.json({
             message: "Productos paginados",
             status: "success",
             total: totalProducts, // Número total de productos
-            data: products, // Productos paginados
+            data: productosConPrecios, // Productos paginados
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -81,11 +86,13 @@ router.get("/paginate", async (req, res) => {
                 categoria: category, // Asegúrate de que el campo se llame 'categoria'
             });
 
+            const productosConPrecios = await calcularPrecio(products);
+
             res.json({
                 message: "Productos paginados",
                 status: "success",
                 total: totalProducts, // Número total de productos
-                data: products, // Productos paginados
+                data: productosConPrecios, // Productos paginados
             });
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -110,7 +117,6 @@ router.get("/paginate", async (req, res) => {
 
 router.post("/delete", authenticateToken, async (req, res) => {
     const nombre = req.body;
-
     try {
         const { nombre } = req.body;
         const deletedCategory = await product.findOneAndDelete({
