@@ -51,7 +51,7 @@ async function calcularPrecio(products) {
     //     throw new Error("No se encontró constData");
     // }
 
-    const products = await Product.find();
+    const products = await ConstDataModel.find();
 
     console.log(constData[constData.length - 1].costoFilamento);
     if (Array.isArray(products)) {
