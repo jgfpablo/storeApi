@@ -4,13 +4,13 @@ const Product = require("../models/product");
 const authenticateToken = require("../middlewares/authToken");
 const product = require("../models/product");
 
+//Funcion anadir producto
 router.post("/product", authenticateToken, async (req, res) => {
     try {
         const existingUser = await Product.findOne({ nombre: req.body.nombre });
         if (existingUser) {
             return res.status(409).json({ error: "El producto ya existe" });
         }
-
         const product = new Product(req.body);
         await product.save();
         res.status(201).json(product);

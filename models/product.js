@@ -9,6 +9,9 @@ const ProductSchema = new mongoose.Schema({
     precio: { type: Number, required: true },
     categoria: { type: String, required: true },
     imagenes: { type: [String], required: true },
+    peso: { type: [Number], required: true },
+    horas: { type: [Number], required: true },
+    minutos: { type: [Number], required: true },
 });
 
 ProductSchema.plugin(AutoIncrement, { inc_field: "productId" });
