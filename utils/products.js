@@ -139,6 +139,7 @@ async function calcularPrecio(products) {
 
             // Asignar el precio al producto
             products.precio = total;
+            console.log(total);
         } catch (error) {
             console.error(error); // Loguear el error para diagnóstico
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
