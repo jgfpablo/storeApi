@@ -40,7 +40,7 @@
 const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
 
 async function calcularPrecio(products) {
-    console.log("entre a calcular precios");
+    console.log(products);
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
