@@ -41,18 +41,19 @@ const ConstDataModel = require("../models/constData"); // Importar tu modelo Con
 const product = require("../models/product");
 
 async function calcularPrecio(products) {
+    // Obtener el último registro de ConstDataModel
+    const constData = ConstDataModel.findOne().sort({
+        _id: -1,
+    }); // Obtener el último documento
+
+    if (!constData) {
+        throw new Error("No se encontró constData");
+    }
+
+    console.log(constData);
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
-                // Obtener el último registro de ConstDataModel
-                const constData = await ConstDataModel.findOne().sort({
-                    _id: -1,
-                }); // Obtener el último documento
-
-                if (!constData) {
-                    throw new Error("No se encontró constData");
-                }
-
                 // Realizar los cálculos basados en los datos obtenidos
                 const KwH =
                     (Number(constData.consumoKw) / 1000 / 60) *
