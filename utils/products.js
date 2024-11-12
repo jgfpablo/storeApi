@@ -50,7 +50,7 @@ async function calcularPrecio(products) {
         throw new Error("No se encontró constData");
     }
 
-    console.log(constData);
+    console.log(constData[0].costoFilamento);
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
