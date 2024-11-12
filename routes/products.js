@@ -22,6 +22,7 @@ router.post("/product", authenticateToken, async (req, res) => {
 
 //all products
 router.get("/", async (req, res) => {
+    console.log("soy all products");
     try {
         const products = await Product.find();
         const productosConPrecios = await calcularPrecio(products);
