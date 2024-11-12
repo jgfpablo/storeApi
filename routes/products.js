@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/product");
 const authenticateToken = require("../middlewares/authToken");
-const product = require("../models/product");
+const { calcularPrecio } = require("../utils/products");
 
 //Funcion anadir producto
 router.post("/product", authenticateToken, async (req, res) => {
