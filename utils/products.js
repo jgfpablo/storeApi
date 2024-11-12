@@ -37,24 +37,20 @@
 //    }
 
 // calcularPrecio.js (Archivo util)
-const constData = require("../models/constData");
 const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
 const product = require("../models/product");
 
-function calcularPrecio(products) {
+async function calcularPrecio(products) {
     // Obtener el último registro de ConstDataModel
-    // const constData = ConstDataModel.findOne().sort({
-    //     _id: -1,
-    // }); // Obtener el último documento
+    const constData = ConstDataModel.findOne().sort({
+        _id: -1,
+    }); // Obtener el último documento
 
-    // if (!constData) {
-    //     throw new Error("No se encontró constData");
-    // }
+    if (!constData) {
+        throw new Error("No se encontró constData");
+    }
 
-    const constData = ConstDataModel.find();
-
-    console.log("entre y abajo deberia estar const data");
-    console.log(constData[constData.length - 1].costoFilamento);
+    console.log(constData);
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
@@ -105,16 +101,6 @@ function calcularPrecio(products) {
         }
     } else {
         try {
-            // Obtener el último registro de ConstDataModel
-            // const constData =  ConstDataModel.findOne().sort({
-            //     _id: -1,
-            // }); // Obtener el último documento
-
-            // if (!constData) {
-            //     throw new Error("No se encontró constData");
-            // }
-
-            // Realizar los cálculos basados en los datos obtenidos
             const KwH =
                 (Number(constData.consumoKw) / 1000 / 60) *
                 calcularTiempo(products.horas, products.minutos);
@@ -145,7 +131,6 @@ function calcularPrecio(products) {
 
             // Asignar el precio al producto
             product[i].precio = total;
-            console.log("el total es :" + total);
         } catch (error) {
             console.error(error); // Loguear el error para diagnóstico
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
