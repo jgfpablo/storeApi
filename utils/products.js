@@ -92,6 +92,7 @@ async function calcularPrecio(products) {
 
                 // Asignar el precio al producto
                 products[index].precio = total;
+                console.log("el total es :" + total);
             } catch (error) {
                 console.error(error); // Loguear el error para diagnóstico
                 throw error; // Lanzar el error para ser manejado más arriba si es necesario
@@ -145,6 +146,8 @@ async function calcularPrecio(products) {
             throw error; // Lanzar el error para ser manejado más arriba si es necesario
         }
     }
+
+    console.log("se ejecuto la funcion");
 
     return products; // Retornar los productos con los precios calculados
 }
