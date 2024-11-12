@@ -43,7 +43,7 @@ async function calcularPrecio(products) {
 
                 let total = gastos + ganancia;
 
-                console.log("el total es  " + total);
+                console.log("el gastos es  " + gastos);
 
                 // Asegurar que el precio no sea menor que 200
                 if (total < 200) {
