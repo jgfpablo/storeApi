@@ -133,10 +133,11 @@ router.get("/paginate", async (req, res) => {
 });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    const nombre = req.body;
-    console.log(req.body);
+    // const nombre = req.body;
+    // console.log(req.body);
     try {
-        const { nombre } = req.body;
+        // const { nombre } = req.body;
+        const nombre = req.body;
         const deletedCategory = await product.findOneAndDelete({
             nombre,
         });
