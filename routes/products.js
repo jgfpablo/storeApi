@@ -134,12 +134,12 @@ router.get("/paginate", async (req, res) => {
 
 router.post("/delete", authenticateToken, async (req, res) => {
     try {
-        const nombre = req.body;
-        const deletedCategory = await product.findOneAndDelete({
+        const { nombre } = req.body;
+        const deleteProduct = await product.findOneAndDelete({
             nombre,
         });
 
-        if (!deletedCategory) {
+        if (!deleteProduct) {
             return res.status(404).json({ alert: "Producto no encontrado" });
         }
 
