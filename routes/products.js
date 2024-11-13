@@ -151,7 +151,6 @@ router.get("/paginate", async (req, res) => {
 // });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    const nombre = req.body;
     try {
         const { nombre } = req.body;
         const deleteProduct = await product.findOneAndDelete({
@@ -159,7 +158,7 @@ router.post("/delete", authenticateToken, async (req, res) => {
         });
 
         if (!deleteProduct) {
-            return res.status(404).json({ alert: nombre });
+            return res.status(404).json({ alert: "Producto no encontrado" });
         }
 
         res.status(200).json({ alert: "Producto eliminado exitosamente" });
