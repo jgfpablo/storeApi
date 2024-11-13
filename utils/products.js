@@ -35,7 +35,12 @@ async function calcularPrecio(products) {
                     (Number(constData.costImpr) /
                         Number(constData.vidaUtil) /
                         60) *
-                    Number(products[index].tiempo);
+                    Number(
+                        calcularTiempo(
+                            products[index].horas,
+                            products[index].minutos
+                        )
+                    );
                 console.log(depreciacion + "depreciacion");
 
                 const merma =
@@ -86,7 +91,12 @@ async function calcularPrecio(products) {
                 (Number(products.peso) * Number(constData.filamento)) / 1000;
             const depreciacion =
                 (Number(constData.costImpr) / Number(constData.vidaUtil) / 60) *
-                Number(products.tiempo);
+                Number(
+                    calcularTiempo(
+                        products[index].horas,
+                        products[index].minutos
+                    )
+                );
             const merma =
                 (Number(products.peso) *
                     (Number(constData.merma) / 100) *
