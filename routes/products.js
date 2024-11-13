@@ -65,7 +65,7 @@ router.get("/search", async (req, res) => {
         //     .skip(start)
         //     .limit(limit);
 
-        const productosConPrecios = await calcularPrecio(totalProducts);
+        const productosConPrecios = await calcularPrecio(products);
 
         res.json({
             message: "Productos paginados",
