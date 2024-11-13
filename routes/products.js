@@ -151,9 +151,9 @@ router.get("/paginate", async (req, res) => {
 // });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    // const nombre = req.body;
     try {
         const { nombre } = req.body;
+
         const deleteProduct = await product.findOneAndDelete({
             nombre,
         });
@@ -164,8 +164,7 @@ router.post("/delete", authenticateToken, async (req, res) => {
 
         res.status(200).json({ alert: "Producto eliminado exitosamente" });
     } catch (error) {
-        // error.message
-        res.status(500).json({ error: `el error esta ak ${nombre}` });
+        res.status(500).json({ error: error });
     }
 });
 
