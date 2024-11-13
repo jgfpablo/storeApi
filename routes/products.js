@@ -47,7 +47,9 @@ router.get("/name", async (req, res) => {
 
 //productos paginados
 router.get("/search", async (req, res) => {
-    console.log("product by search");
+    console.log("product by search" + req.query);
+
+    //fijate el tipo de dato que recibe en search
 
     const name = req.query.name;
     const start = parseInt(req.query.start) || 0; //indice
