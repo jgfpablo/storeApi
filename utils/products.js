@@ -1,16 +1,20 @@
-const ConstDataModel = require("../models/constData");
+const ConstDataModel = require("../models/constData"); // Importar tu modelo ConstData
 
 async function calcularPrecio(products) {
-    const constData = await ConstDataModel.findOne().sort({ _id: -1 });
+    // Obtener el último registro de ConstDataModel
+    const constData = await ConstDataModel.findOne().sort({ _id: -1 }); // Esperar el último documento
 
     if (!constData) {
         throw new Error("No se encontró constData");
     }
 
+    // console.log(constData + "const datovich");
+    // console.log(products + "products");
+
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
-            if (products[index].precio == 0) {
-                try {
+            try {
+                if (products[index].precio != 0) {
                     const KwH =
                         (Number(constData.consumoKw) / 1000 / 60) *
                         calcularTiempo(
@@ -58,19 +62,16 @@ async function calcularPrecio(products) {
                     }
 
                     products[index].precio = total;
-                } catch (error) {
-                    throw error;
                 }
-            }
-            //este else no sabria si es necesario
-            else {
-                return;
+            } catch (error) {
+                throw error;
             }
         }
     } else {
         // Si products no es un array, calcular precio para un único producto
         // console.log("No es un array");
-        if (products[index].precio == 0) {
+
+        if (products.precio != 0) {
             try {
                 const KwH =
                     (Number(constData.consumoKw) / 1000 / 60) *
