@@ -53,17 +53,17 @@ router.get("/search", async (req, res) => {
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
     try {
-        // const products = await Product.find({
-        //     nombre: { $regex: name, $options: "i" },
-        // })
-        //  .skip(start)
-        //  .limit(limit);
-
-        const totalProducts = await Product.countDocuments({
+        const products = await Product.find({
             nombre: { $regex: name, $options: "i" },
         })
             .skip(start)
             .limit(limit);
+
+        // const totalProducts = await Product.countDocuments({
+        //     nombre: { $regex: name, $options: "i" },
+        // })
+        //     .skip(start)
+        //     .limit(limit);
 
         const productosConPrecios = await calcularPrecio(totalProducts);
 
