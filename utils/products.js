@@ -8,8 +8,8 @@ async function calcularPrecio(products) {
         throw new Error("No se encontró constData");
     }
 
-    console.log(constData + "const datovich"); // Para verificar los datos de constData
-    console.log(products + "products");
+    // console.log(constData + "const datovich");
+    // console.log(products + "products");
 
     if (Array.isArray(products)) {
         console.log("es un array");
@@ -45,6 +45,8 @@ async function calcularPrecio(products) {
 
                 let total = gastos + ganancia;
 
+                console.log(gastos);
+
                 // console.log("el gastos es  " + gastos);
 
                 // Asegurar que el precio no sea menor que 200
@@ -63,7 +65,7 @@ async function calcularPrecio(products) {
         }
     } else {
         // Si products no es un array, calcular precio para un único producto
-        console.log("No es un array");
+        // console.log("No es un array");
 
         try {
             const KwH =
