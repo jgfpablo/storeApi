@@ -21,15 +21,15 @@ async function calcularPrecio(products) {
                         products[index].horas,
                         products[index].minutos
                     );
-                console.log(KwH + "kwh");
+                // console.log(KwH + "kwh");
                 const costoEnergia = KwH * constData.costokwH;
-                console.log(costoEnergia + "costoEnergia");
+                // console.log(costoEnergia + "costoEnergia");
 
                 const costoFilamento =
                     (Number(products[index].peso) *
                         Number(constData.filamento)) /
                     1000;
-                console.log(costoFilamento + "costoFilamento");
+                // console.log(costoFilamento + "costoFilamento");
 
                 const depreciacion =
                     (Number(constData.costImpr) /
@@ -41,7 +41,7 @@ async function calcularPrecio(products) {
                             products[index].minutos
                         )
                     );
-                console.log(depreciacion + "depreciacion");
+                // console.log(depreciacion + "depreciacion");
 
                 const merma =
                     (Number(products[index].peso) *
@@ -49,16 +49,16 @@ async function calcularPrecio(products) {
                         Number(constData.filamento)) /
                     1000;
 
-                console.log(merma + "merma");
+                // console.log(merma + "merma");
 
                 const ganancia =
                     (costoEnergia + costoFilamento + depreciacion + merma) *
                     (constData.ganan / 100);
-                console.log(ganancia + "ganancia");
+                // console.log(ganancia + "ganancia");
 
                 const gastos =
                     costoEnergia + costoFilamento + depreciacion + merma;
-                console.log(gastos + "gastos");
+                // console.log(gastos + "gastos");
 
                 let total = gastos + ganancia;
 

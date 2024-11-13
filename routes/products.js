@@ -47,7 +47,8 @@ router.get("/name", async (req, res) => {
 
 //productos paginados
 router.get("/search", async (req, res) => {
-    console.log("product by search" + req.query);
+    console.log("product by search name" + req.query.name);
+    console.log("product by search search" + req.query.search);
 
     //fijate el tipo de dato que recibe en search
 
