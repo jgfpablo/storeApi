@@ -110,11 +110,13 @@ router.get("/paginate", async (req, res) => {
 
             const totalProducts = await Product.countDocuments();
 
+            const productosConPrecios = await calcularPrecio(products);
+
             res.json({
                 message: "Productos paginados",
                 status: "success",
                 total: totalProducts, // Número total de productos
-                data: products, // Productos paginados
+                data: productosConPrecios, // Productos paginados
             });
         } catch (error) {
             res.status(500).json({ error: error.message });
