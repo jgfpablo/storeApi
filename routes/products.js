@@ -47,8 +47,7 @@ router.get("/name", async (req, res) => {
 
 //productos paginados
 router.get("/search", async (req, res) => {
-    console.log("product by search name" + req.query.name);
-    console.log("product by search search" + req.query.search);
+    // console.log("product by search name" + req.query.name);
 
     //fijate el tipo de dato que recibe en search
 
@@ -68,6 +67,7 @@ router.get("/search", async (req, res) => {
         //     .skip(start)
         //     .limit(limit);
 
+        console.log(products);
         const productosConPrecios = await calcularPrecio(products);
 
         res.json({
