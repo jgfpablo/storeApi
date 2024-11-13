@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require("../models/product");
 const authenticateToken = require("../middlewares/authToken");
 const { calcularPrecio } = require("../utils/products");
+const product = require("../models/product");
 
 //Funcion anadir producto
 router.post("/product", authenticateToken, async (req, res) => {
@@ -132,7 +133,25 @@ router.get("/paginate", async (req, res) => {
     }
 });
 
+// router.post("/delete", authenticateToken, async (req, res) => {
+//     try {
+//         const { nombre } = req.body;
+//         const deleteProduct = await product.findOneAndDelete({
+//             nombre,
+//         });
+
+//         if (!deleteProduct) {
+//             return res.status(404).json({ alert: "Producto no encontrado" });
+//         }
+
+//         res.status(200).json({ alert: "Producto eliminado exitosamente" });
+//     } catch (error) {
+//         res.status(500).json({ error: ` error nombre : ${nombre}` });
+//     }
+// });
+
 router.post("/delete", authenticateToken, async (req, res) => {
+    const nombre = req.body;
     try {
         const { nombre } = req.body;
         const deleteProduct = await product.findOneAndDelete({
@@ -140,12 +159,13 @@ router.post("/delete", authenticateToken, async (req, res) => {
         });
 
         if (!deleteProduct) {
-            return res.status(404).json({ alert: "Producto no encontrado" });
+            return res.status(404).json({ alert: nombre });
         }
 
         res.status(200).json({ alert: "Producto eliminado exitosamente" });
     } catch (error) {
-        res.status(500).json({ error: ` error nombre : ${nombre}` });
+        // error.message
+        res.status(500).json({ error: `el error esta ak ${nombre}` });
     }
 });
 
