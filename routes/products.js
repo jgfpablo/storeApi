@@ -34,6 +34,8 @@ router.get("/", async (req, res) => {
 
 //product by name
 router.get("/name", async (req, res) => {
+    console.log("product by name");
+
     const name = req.query.name;
     try {
         const products = await Product.find({ nombre: name });
@@ -45,6 +47,8 @@ router.get("/name", async (req, res) => {
 
 //productos paginados
 router.get("/search", async (req, res) => {
+    console.log("product by search");
+
     const name = req.query.name;
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
@@ -73,6 +77,8 @@ router.get("/search", async (req, res) => {
 });
 
 router.get("/paginate", async (req, res) => {
+    console.log("product by paginate");
+
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
     const category = req.query.category;
