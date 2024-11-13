@@ -61,13 +61,13 @@ router.get("/search", async (req, res) => {
             .skip(start)
             .limit(limit);
 
-        // const totalProducts = await Product.countDocuments({
-        //     nombre: { $regex: name, $options: "i" },
-        // })
-        //     .skip(start)
-        //     .limit(limit);
+        const totalProducts = await Product.countDocuments({
+            nombre: { $regex: name, $options: "i" },
+        })
+            .skip(start)
+            .limit(limit);
 
-        // console.log(products);
+        //  console.log(products);
 
         const productosConPrecios = await calcularPrecio(products);
 
