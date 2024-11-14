@@ -32,6 +32,9 @@ app.use("/apiStore/products", productsRoutes);
 const categoryRoutes = require("./routes/categories");
 app.use("/apiStore/categories", categoryRoutes);
 
+const filamentRoutes = require("./routes/filaments");
+app.use("/apiStore/filaments", filamentRoutes);
+
 const constData = require("./routes/constData");
 app.use("/apiStore/constData", constData);
 

@@ -12,6 +12,11 @@ const ProductSchema = new mongoose.Schema({
     peso: { type: [Number], required: true },
     horas: { type: [Number], required: true },
     minutos: { type: [Number], required: true },
+    // --
+    alto: { type: [String], required: true },
+    ancho: { type: [String], required: true },
+    grosor: { type: [String], required: true },
+    material: { type: [String], required: true },
 });
 
 ProductSchema.plugin(AutoIncrement, { inc_field: "productId" });
