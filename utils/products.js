@@ -14,7 +14,7 @@ async function calcularPrecio(products) {
     if (Array.isArray(products)) {
         for (let index = 0; index < products.length; index++) {
             try {
-                if (products[index].precio != 0) {
+                if (products[index].precio == 0) {
                     const KwH =
                         (Number(constData.consumoKw) / 1000 / 60) *
                         calcularTiempo(
@@ -71,7 +71,7 @@ async function calcularPrecio(products) {
         // Si products no es un array, calcular precio para un único producto
         // console.log("No es un array");
 
-        if (products.precio != 0) {
+        if (products.precio == 0) {
             try {
                 const KwH =
                     (Number(constData.consumoKw) / 1000 / 60) *
