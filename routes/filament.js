@@ -6,7 +6,7 @@ const authenticateToken = require("../middlewares/authToken");
 router.post("/filament", authenticateToken, async (req, res) => {
     try {
         const existingUser = await Filament.findOne({
-            nombre: req.body.nombre,
+            color: req.body.color,
         });
         if (existingUser) {
             return res.status(409).json({ error: "El filamento ya existe" });
@@ -21,18 +21,18 @@ router.post("/filament", authenticateToken, async (req, res) => {
 });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    const nombre = req.body; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
+    const color = req.body; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
 
     try {
         // Busca y elimina la categoría
-        const { nombre } = req.body;
+        const { color } = req.body;
         const deletedFilament = await Filament.findOneAndDelete({
-            nombre,
+            color,
         });
 
         if (!deletedFilament) {
             // Categoría no encontrada
-            return res.status(404).json({ alert: nombre });
+            return res.status(404).json({ alert: color });
         }
 
         // Aquí puedes agregar lógica adicional si necesitas manejar productos huérfanos
@@ -42,7 +42,7 @@ router.post("/delete", authenticateToken, async (req, res) => {
         res.status(200).json({ alert: "Filamento eliminado exitosamente" });
     } catch (error) {
         // error.message
-        res.status(500).json({ error: `el error esta ak ${nombre}` });
+        res.status(500).json({ error: `el error esta ak ${color}` });
     }
 });
 

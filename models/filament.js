@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const FilamentSchema = new mongoose.Schema({
-    color: { type: String, required: true },
+    color: { type: String, required: true }, //cambiar a color en algun momento
+    marca: { type: String, required: true },
     imagenes: { type: [String], required: true },
 });
 
