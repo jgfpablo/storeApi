@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const Filament = require("../models/filamet");
+const Filament = require("../models/filament");
 const authenticateToken = require("../middlewares/authToken");
 
-router.post("/filamet", authenticateToken, async (req, res) => {
+router.post("/filament", authenticateToken, async (req, res) => {
     try {
         const existingUser = await Filament.findOne({
             nombre: req.body.nombre,
@@ -12,9 +12,9 @@ router.post("/filamet", authenticateToken, async (req, res) => {
             return res.status(409).json({ error: "El filamento ya existe" });
         }
 
-        const filamet = new Filament(req.body);
-        await filamet.save();
-        res.status(201).json(filamet);
+        const filament = new Filament(req.body);
+        await filament.save();
+        res.status(201).json(filament);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -39,7 +39,7 @@ router.post("/delete", authenticateToken, async (req, res) => {
         // Por ejemplo, podrías eliminar productos asociados a esta categoría:
         // await Product.deleteMany({ categoria: id });
 
-        res.status(200).json({ alert: "Categoría eliminada exitosamente" });
+        res.status(200).json({ alert: "Filamento eliminado exitosamente" });
     } catch (error) {
         // error.message
         res.status(500).json({ error: `el error esta ak ${nombre}` });
