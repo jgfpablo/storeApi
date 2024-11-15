@@ -175,7 +175,8 @@ router.put("/updateProduct", authenticateToken, async (req, res) => {
 
     try {
         // Obtener los datos enviados en el cuerpo de la solicitud
-        const { nombre, ...product } = req.body.product; // Separar el nombre de los demás campos
+        // const { nombre, ...product } = req.body.product; // Separar el nombre de los demás campos
+        const nombre = req.body.name;
 
         if (!nombre) {
             return res.status(400).json({
