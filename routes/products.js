@@ -171,12 +171,11 @@ router.post("/delete", authenticateToken, async (req, res) => {
 });
 
 router.put("/updateProduct", authenticateToken, async (req, res) => {
-    console.log(req.body.product);
     console.log(req.body.product.nombre);
 
     try {
         // Obtener los datos enviados en el cuerpo de la solicitud
-        const { nombre, ...product } = req.body; // Separar el nombre de los demás campos
+        const { nombre, ...product } = req.body.product; // Separar el nombre de los demás campos
 
         if (!nombre) {
             return res.status(400).json({
