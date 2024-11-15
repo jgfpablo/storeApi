@@ -171,30 +171,39 @@ router.post("/delete", authenticateToken, async (req, res) => {
 });
 
 router.put("/updateProduct", authenticateToken, async (req, res) => {
-    console.log(req.body.product);
-    console.log(req.body.name);
-
+    console.log(req.product);
     try {
-        const { nombre } = req.body; // Obtenemos el ID del producto desde los parámetros de la ruta
-        const updates = req.body; // Datos a actualizar enviados en el cuerpo de la solicitud
+        // Obtener los datos enviados en el cuerpo de la solicitud
+        const { nombre, ...product } = req.body; // Separar el nombre de los demás campos
 
-        // Encontrar y actualizar el producto
-        const updatedProduct = await Product.findByNameAndUpdate(
-            nombre, // ID del producto a buscar
-            updates, // Campos que se deben actualizar
-            { new: true } // Opciones: `new: true` retorna el producto actualizado
+        if (!nombre) {
+            return res.status(400).json({
+                error: "El campo 'nombre' es obligatorio para actualizar el producto",
+            });
+        }
+
+        // Buscar el producto por nombre y actualizarlo con los datos proporcionados
+        const updatedProduct = await Product.findOneAndUpdate(
+            { nombre }, // Condición de búsqueda: producto con el nombre especificado
+            product, // Datos a actualizar
+            { new: true } // Opción: retorna el producto actualizado
         );
 
-        // Si el producto no existe
+        // Si no se encuentra el producto
         if (!updatedProduct) {
             return res.status(404).json({ error: "Producto no encontrado" });
         }
 
         // Responder con el producto actualizado
-        res.status(200).json(updatedProduct);
+        res.status(200).json({
+            message: "Producto actualizado exitosamente",
+            product: updatedProduct,
+        });
     } catch (error) {
         // Manejo de errores
-        res.status(500).json({ error: error.message });
+        res.status(500).json({
+            error: `Error al actualizar el producto: ${error.message}`,
+        });
     }
 });
 
