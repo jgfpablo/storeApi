@@ -205,6 +205,7 @@ router.put("/updateProduct", authenticateToken, async (req, res) => {
             error: `Error al actualizar el producto: ${error.message}`,
             status: "failure",
             data: this.name,
+            name: this.name,
         });
     }
 });
