@@ -171,24 +171,20 @@ router.post("/delete", authenticateToken, async (req, res) => {
 });
 
 router.put("/updateProduct", authenticateToken, async (req, res) => {
-    console.log(req.body.product.nombre);
-    console.log(req.body.name);
-
     try {
-        // Obtener los datos enviados en el cuerpo de la solicitud
-        // const { nombre, ...product } = req.body.product; // Separar el nombre de los demás campos
-        const nombre = req.body.name;
+        // Obtener el nombre y los datos del producto desde el cuerpo de la solicitud
+        const { name, product } = req.body; // Desestructurar el 'name' y 'product' del cuerpo de la solicitud
 
-        if (!nombre) {
+        if (!name) {
             return res.status(400).json({
-                error: "El campo 'nombre' es obligatorio para actualizar el producto",
+                error: "El campo 'name' es obligatorio para actualizar el producto",
             });
         }
 
         // Buscar el producto por nombre y actualizarlo con los datos proporcionados
         const updatedProduct = await Product.findOneAndUpdate(
-            { nombre }, // Condición de búsqueda: producto con el nombre especificado
-            product, // Datos a actualizar
+            { nombre: name }, // Condición de búsqueda: producto con el nombre especificado
+            product, // Datos a actualizar (product contiene todos los campos nuevos)
             { new: true } // Opción: retorna el producto actualizado
         );
 
