@@ -14,6 +14,8 @@ router.post("/filament", authenticateToken, async (req, res) => {
 
         const filament = new Filament(req.body);
         await filament.save();
+
+        console.log(filament + "el filamento es este");
         res.status(201).json(filament);
     } catch (error) {
         res.status(400).json({ error: error.message });
