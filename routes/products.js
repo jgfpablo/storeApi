@@ -197,12 +197,14 @@ router.put("/updateProduct", authenticateToken, async (req, res) => {
         res.json({
             alert: "Producto Actualizado exitosamente",
             status: "success",
-            data: updatedProduct, // Productos paginados
+            data: product.name,
         });
     } catch (error) {
         // Manejo de errores
         res.status(500).json({
             error: `Error al actualizar el producto: ${error.message}`,
+            status: "failure",
+            data: product.name,
         });
     }
 });
