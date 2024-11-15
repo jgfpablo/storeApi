@@ -21,17 +21,15 @@ router.post("/filament", authenticateToken, async (req, res) => {
 });
 
 router.post("/delete", authenticateToken, async (req, res) => {
-    const color = req.body; // Suponiendo que envías el id de la categoría a eliminar en el cuerpo de la solicitud
+    const color = req.body;
 
     try {
-        // Busca y elimina la categoría
         const { color } = req.body;
         const deletedFilament = await Filament.findOneAndDelete({
             color,
         });
 
         if (!deletedFilament) {
-            // Categoría no encontrada
             return res.status(404).json({ alert: color });
         }
 

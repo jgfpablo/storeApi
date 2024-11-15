@@ -40,7 +40,9 @@ router.get("/name", async (req, res) => {
     const name = req.query.name;
     try {
         const products = await Product.find({ nombre: name });
-        res.json(products);
+        const productosConPrecios = await calcularPrecio(products);
+
+        res.json(productosConPrecios);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
