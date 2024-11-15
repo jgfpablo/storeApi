@@ -197,8 +197,7 @@ router.put("/updateProduct", authenticateToken, async (req, res) => {
         res.json({
             alert: "Producto Actualizado exitosamente",
             status: "success",
-            name: product.name,
-            data: product.name,
+            name: updatedProduct.name,
         });
     } catch (error) {
         // Manejo de errores
