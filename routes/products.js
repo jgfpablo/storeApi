@@ -170,4 +170,32 @@ router.post("/delete", authenticateToken, async (req, res) => {
     }
 });
 
+router.put("/updateProduct", authenticateToken, async (req, res) => {
+    console.log(req.body.product);
+    console.log(req.body.name);
+
+    try {
+        const { nombre } = req.body; // Obtenemos el ID del producto desde los parámetros de la ruta
+        const updates = req.body; // Datos a actualizar enviados en el cuerpo de la solicitud
+
+        // Encontrar y actualizar el producto
+        const updatedProduct = await Product.findByNameAndUpdate(
+            nombre, // ID del producto a buscar
+            updates, // Campos que se deben actualizar
+            { new: true } // Opciones: `new: true` retorna el producto actualizado
+        );
+
+        // Si el producto no existe
+        if (!updatedProduct) {
+            return res.status(404).json({ error: "Producto no encontrado" });
+        }
+
+        // Responder con el producto actualizado
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        // Manejo de errores
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
