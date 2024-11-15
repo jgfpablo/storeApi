@@ -23,7 +23,6 @@ router.post("/product", authenticateToken, async (req, res) => {
 
 //all products
 router.get("/", async (req, res) => {
-    console.log("soy all products");
     try {
         const products = await Product.find();
         const productosConPrecios = await calcularPrecio(products);
@@ -194,9 +193,11 @@ router.put("/updateProduct", authenticateToken, async (req, res) => {
         }
 
         // Responder con el producto actualizado
-        res.status(200).json({
-            message: "Producto actualizado exitosamente",
-            product: updatedProduct,
+
+        res.json({
+            alert: "Producto Actualizado exitosamente",
+            status: "success",
+            data: updatedProduct, // Productos paginados
         });
     } catch (error) {
         // Manejo de errores
