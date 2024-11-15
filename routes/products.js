@@ -172,6 +172,7 @@ router.post("/delete", authenticateToken, async (req, res) => {
 
 router.put("/updateProduct", authenticateToken, async (req, res) => {
     console.log(req.body.product.nombre);
+    console.log(req.body.name);
 
     try {
         // Obtener los datos enviados en el cuerpo de la solicitud
