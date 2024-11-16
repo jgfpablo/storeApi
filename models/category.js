@@ -4,6 +4,7 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const CategorySchema = new mongoose.Schema({
     nombre: { type: String, required: true },
+    adicional: { type: Number, required: true },
     imagenes: { type: [String], required: true },
 });
 
