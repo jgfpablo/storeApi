@@ -17,6 +17,7 @@ const ProductSchema = new mongoose.Schema({
     ancho: { type: [String], required: true },
     grosor: { type: [String], required: true },
     material: { type: [String], required: true },
+    multiplicador: { type: Number, required: true },
 });
 
 ProductSchema.plugin(AutoIncrement, { inc_field: "productId" });
