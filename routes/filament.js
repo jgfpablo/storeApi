@@ -56,44 +56,41 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/updateFilament", authenticateToken, async (req, res) => {
-    // console.log(req.body);
-    // console.log(req.body.filament);
-
     try {
-        // Obtener el nombre y los datos del producto desde el cuerpo de la solicitud
-        const { filament } = req.body; // Desestructurar el 'name' y 'product' del cuerpo de la solicitud
-        console.log(filament);
-        if (!filament.color) {
+        // Obtener el filamento desde el cuerpo de la solicitud
+        const { filament } = req.body;
+
+        if (!filament || !filament.color) {
             return res.status(400).json({
-                error: "El campo 'name' es obligatorio para actualizar el producto",
+                error: "El campo 'color' es obligatorio para actualizar el filamento",
             });
         }
 
-        // Buscar el producto por nombre y actualizarlo con los datos proporcionados
-        const updateFilament = await Filament.findOneAndUpdate(
-            { filament: color }, // Condición de búsqueda: producto con el nombre especificado
-            filament, // Datos a actualizar (product contiene todos los campos nuevos)
-            { new: true } // Opción: retorna el producto actualizado
+        // Buscar el filamento por su color y actualizarlo
+        const updatedFilament = await Filament.findOneAndUpdate(
+            { color: filament.color }, // Condición de búsqueda correcta
+            filament, // Datos a actualizar
+            { new: true } // Retorna el filamento actualizado
         );
 
-        // Si no se encuentra el producto
-        if (!updateFilament) {
-            return res.status(404).json({ error: "Producto no encontrado" });
+        // Si no se encuentra el filamento
+        if (!updatedFilament) {
+            return res.status(404).json({
+                error: "Filamento no encontrado",
+            });
         }
 
-        // Responder con el producto actualizado
-
+        // Responder con el filamento actualizado
         res.json({
-            alert: "Filamento Actualizado exitosamente",
+            alert: "Filamento actualizado exitosamente",
             status: "success",
-            data: req.body.filament.color,
+            data: updatedFilament,
         });
     } catch (error) {
         // Manejo de errores
         res.status(500).json({
-            error: `Error al actualizar el producto: ${error.message}`,
+            error: `Error al actualizar el filamento: ${error.message}`,
             status: "failure",
-            data: req.body.filament.color,
         });
     }
 });
