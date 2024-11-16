@@ -56,13 +56,13 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/updateFilament", authenticateToken, async (req, res) => {
-    console.log(req.body);
-    console.log(req.body.filament);
+    // console.log(req.body);
+    // console.log(req.body.filament);
 
     try {
         // Obtener el nombre y los datos del producto desde el cuerpo de la solicitud
         const { filament } = req.body; // Desestructurar el 'name' y 'product' del cuerpo de la solicitud
-
+        console.log(filament);
         if (!filament.color) {
             return res.status(400).json({
                 error: "El campo 'name' es obligatorio para actualizar el producto",
