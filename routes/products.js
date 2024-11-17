@@ -147,7 +147,7 @@ router.get("/paginate", async (req, res) => {
                 nombre: category,
             });
 
-            console.log("CATEGORIA SELECCIONADA : " + selectedCategory);
+            // console.log("CATEGORIA SELECCIONADA : " + selectedCategory);
 
             if (selectedCategory) {
                 const adicional = parseFloat(selectedCategory.adicional);
@@ -169,11 +169,22 @@ router.get("/paginate", async (req, res) => {
         }
     } else {
         try {
+            categories = await Category.find();
+
             const products = await Product.find().skip(start).limit(limit);
 
             const totalProducts = await Product.countDocuments();
 
             const productosConPrecios = await calcularPrecio(products);
+
+            for (category of categories) {
+                const adicional = parseFloat(category.adicional);
+                for (const product of productosConPrecios) {
+                    if (product.categoria === category.nombre) {
+                        product.precio += product.multiplicador * adicional;
+                    }
+                }
+            }
 
             res.json({
                 message: "Productos paginados",
