@@ -95,10 +95,10 @@ router.get("/name", async (req, res) => {
         });
         console.log(categoria);
 
-        let adicional = parseFloat(categoria.adicional);
+        // let adicional = parseFloat(categoria.adicional);
         for (const product of productosConPrecios) {
             if (product.categoria === categoria.nombre) {
-                product.precio += product.multiplicador * adicional;
+                product.precio += product.multiplicador * categoria.adicional;
             }
         }
 
