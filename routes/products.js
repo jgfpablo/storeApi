@@ -79,7 +79,7 @@ router.get("/", async (req, res) => {
 
 //product by name
 router.get("/name", async (req, res) => {
-    console.log("product by name");
+    console.log("product by namee");
 
     const name = req.query.name;
     try {
@@ -90,16 +90,14 @@ router.get("/name", async (req, res) => {
 
         console.log(productosConPrecios);
 
-        categories = await category.findOne({
+        category = await category.findOne({
             nombre: productosConPrecios.categoria,
         });
 
-        for (let category of categories) {
-            let adicional = parseFloat(category.adicional);
-            for (const product of productosConPrecios) {
-                if (product.categoria === category.nombre) {
-                    product.precio += product.multiplicador * adicional;
-                }
+        let adicional = parseFloat(category.adicional);
+        for (const product of productosConPrecios) {
+            if (product.categoria === category.nombre) {
+                product.precio += product.multiplicador * adicional;
             }
         }
 
