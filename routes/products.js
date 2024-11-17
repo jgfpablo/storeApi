@@ -111,6 +111,8 @@ router.get("/search", async (req, res) => {
 
         //  console.log(products);
 
+        const categories = await category.find();
+
         const productosConPrecios = await calcularPrecio(products);
 
         res.json({
@@ -142,6 +144,24 @@ router.get("/paginate", async (req, res) => {
             });
 
             const productosConPrecios = await calcularPrecio(products);
+            // ---------------------------------
+
+            const categories = await category.find();
+
+            const categoryMap = new Map();
+            for (const cat of categories) {
+                categoryMap.set(cat.nombre, parseFloat(cat.adicional)); // Convertir 'adicional' a número
+            }
+
+            // Calcular precios adicionales
+            for (const product of productosConPrecios) {
+                const adicional = categoryMap.get(product.categoria); // Buscar adicional en el mapa
+                if (adicional) {
+                    product.precio += adicional * product.multiplicador; // Actualizar el precio
+                }
+            }
+
+            //   ---------------------------
 
             res.json({
                 message: "Productos paginados",
