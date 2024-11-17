@@ -4,6 +4,7 @@ const Product = require("../models/product");
 const authenticateToken = require("../middlewares/authToken");
 const { calcularPrecio } = require("../utils/products");
 const product = require("../models/product");
+const category = require("../models/category");
 
 //Funcion anadir producto
 router.post("/product", authenticateToken, async (req, res) => {
@@ -22,10 +23,53 @@ router.post("/product", authenticateToken, async (req, res) => {
 });
 
 //all products
+// router.get("/", async (req, res) => {
+//     try {
+//         const products = await Product.find();
+//         const productosConPrecios = await calcularPrecio(products);
+
+//         const categories = await category.find();
+
+//         for (let index = 0; index < productosConPrecios.length; index++) {
+//             for (let i = 0; i < categories.length; i++) {
+//                 if (
+//                     productosConPrecios[index].categoria == categoria[i].nombre
+//                 ) {
+//                     productosConPrecios[index].precio =
+//                         productosConPrecios[index].precio +
+//                         categoria[i].adicional *
+//                             productosConPrecios[index].multiplicador;
+//                 }
+//             }
+//         }
+
+//         res.json(productosConPrecios);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
 router.get("/", async (req, res) => {
     try {
+        // Obtener productos y categorías
         const products = await Product.find();
         const productosConPrecios = await calcularPrecio(products);
+        const categories = await category.find();
+
+        // Crear un mapa para las categorías por nombre
+        const categoryMap = new Map();
+        for (const cat of categories) {
+            categoryMap.set(cat.nombre, parseFloat(cat.adicional)); // Convertir 'adicional' a número
+        }
+
+        // Calcular precios adicionales
+        for (const product of productosConPrecios) {
+            const adicional = categoryMap.get(product.categoria); // Buscar adicional en el mapa
+            if (adicional) {
+                product.precio += adicional * product.multiplicador; // Actualizar el precio
+            }
+        }
+
         res.json(productosConPrecios);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -49,10 +93,6 @@ router.get("/name", async (req, res) => {
 
 //productos paginados
 router.get("/search", async (req, res) => {
-    // console.log("product by search name" + req.query.name);
-
-    //fijate el tipo de dato que recibe en search
-
     const name = req.query.name;
     const start = parseInt(req.query.start) || 0; //indice
     const limit = parseInt(req.query.limit) || 1; //limit
@@ -72,8 +112,6 @@ router.get("/search", async (req, res) => {
         //  console.log(products);
 
         const productosConPrecios = await calcularPrecio(products);
-
-        console.log(productosConPrecios);
 
         res.json({
             message: "Productos paginados",
