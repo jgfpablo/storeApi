@@ -95,7 +95,7 @@ router.get("/name", async (req, res) => {
         });
 
         let adicional = parseFloat(category.adicional);
-        for (const product of productosConPrecios) {
+        for (product of productosConPrecios) {
             if (product.categoria === category.nombre) {
                 product.precio += product.multiplicador * adicional;
             }
