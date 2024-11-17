@@ -5,6 +5,7 @@ const authenticateToken = require("../middlewares/authToken");
 const { calcularPrecio } = require("../utils/products");
 const product = require("../models/product");
 const Category = require("../models/category");
+const category = require("../models/category");
 
 //Funcion anadir producto
 router.post("/product", authenticateToken, async (req, res) => {
@@ -84,6 +85,21 @@ router.get("/name", async (req, res) => {
     try {
         const products = await Product.find({ nombre: name });
         const productosConPrecios = await calcularPrecio(products);
+
+        // ----------------------------------------
+
+        selectedCategory = await category.findOne({
+            nombre: productosConPrecios[0].categoria,
+        });
+
+        for (let category of selectedCategory) {
+            let adicional = parseFloat(category.adicional);
+            for (const product of productosConPrecios) {
+                if (product.categoria === category.nombre) {
+                    product.precio += product.multiplicador * adicional;
+                }
+            }
+        }
 
         res.json(productosConPrecios);
     } catch (error) {
