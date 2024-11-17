@@ -90,13 +90,13 @@ router.get("/name", async (req, res) => {
 
         console.log(productosConPrecios);
 
-        let category = await category.findOne({
+        let categoria = await category.findOne({
             nombre: productosConPrecios.categoria,
         });
 
-        let adicional = parseFloat(category.adicional);
+        let adicional = parseFloat(categoria.adicional);
         for (const product of productosConPrecios) {
-            if (product.categoria === category.nombre) {
+            if (product.categoria === categoria.nombre) {
                 product.precio += product.multiplicador * adicional;
             }
         }
