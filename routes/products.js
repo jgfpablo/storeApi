@@ -169,7 +169,7 @@ router.get("/paginate", async (req, res) => {
         }
     } else {
         try {
-            categories = await Category.find();
+            const categories = await Category.find();
 
             const products = await Product.find().skip(start).limit(limit);
 
