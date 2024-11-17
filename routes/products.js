@@ -177,7 +177,7 @@ router.get("/paginate", async (req, res) => {
 
             const productosConPrecios = await calcularPrecio(products);
 
-            for (category of categories) {
+            for (let category of categories) {
                 let adicional = parseFloat(category.adicional);
                 for (const product of productosConPrecios) {
                     if (product.categoria === category.nombre) {
