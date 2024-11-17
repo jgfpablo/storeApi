@@ -126,49 +126,100 @@ router.get("/search", async (req, res) => {
     }
 });
 
+// router.get("/paginate", async (req, res) => {
+//     const start = parseInt(req.query.start);
+//     const limit = parseInt(req.query.limit);
+//     const category = req.query.category;
+
+//     if (category) {
+//         try {
+//             const products = await Product.find({ categoria: category })
+//                 .skip(start)
+//                 .limit(limit);
+
+//             const totalProducts = await Product.countDocuments({
+//                 categoria: category,
+//             });
+
+//             const productosConPrecios = await calcularPrecio(products);
+
+//             res.json({
+//                 message: "Productos paginados",
+//                 status: "success",
+//                 total: totalProducts,
+//                 data: productosConPrecios,
+//             });
+//         } catch (error) {
+//             res.status(500).json({ error: error.message });
+//         }
+//     } else {
+//         try {
+//             const products = await Product.find().skip(start).limit(limit);
+
+//             const totalProducts = await Product.countDocuments();
+
+//             const productosConPrecios = await calcularPrecio(products);
+
+//             res.json({
+//                 message: "Productos paginados",
+//                 status: "success",
+//                 total: totalProducts,
+//                 data: productosConPrecios,
+//             });
+//         } catch (error) {
+//             res.status(500).json({ error: error.message });
+//         }
+//     }
+// });
+
 router.get("/paginate", async (req, res) => {
-    const start = parseInt(req.query.start);
-    const limit = parseInt(req.query.limit);
-    const category = req.query.category;
+    const start = parseInt(req.query.start) || 0; // Índice inicial
+    const limit = parseInt(req.query.limit) || 10; // Límite de resultados
+    const categoryName = req.query.category; // Nombre de la categoría
 
-    if (category) {
-        try {
-            const products = await Product.find({ categoria: category })
-                .skip(start)
-                .limit(limit);
-
-            const totalProducts = await Product.countDocuments({
-                categoria: category,
-            });
-
-            const productosConPrecios = await calcularPrecio(products);
-
-            res.json({
-                message: "Productos paginados",
-                status: "success",
-                total: totalProducts,
-                data: productosConPrecios,
-            });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
+    try {
+        // Buscar la categoría si se especificó
+        let selectedCategory = null;
+        if (categoryName) {
+            selectedCategory = await Category.findOne({ nombre: categoryName });
+            if (!selectedCategory) {
+                return res.status(404).json({
+                    message: "Categoría no encontrada",
+                    status: "error",
+                });
+            }
         }
-    } else {
-        try {
-            const products = await Product.find().skip(start).limit(limit);
 
-            const totalProducts = await Product.countDocuments();
+        // Filtro base para buscar productos
+        const filter = selectedCategory ? { categoria: categoryName } : {};
+        const products = await Product.find(filter).skip(start).limit(limit);
 
-            const productosConPrecios = await calcularPrecio(products);
+        // Total de productos
+        const totalProducts = await Product.countDocuments(filter);
 
-            res.json({
-                message: "Productos paginados",
-                status: "success",
-                total: totalProducts,
-                data: productosConPrecios,
-            });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
+        // Calcular precios base de los productos
+        const productosConPrecios = await calcularPrecio(products);
+
+        // Si se encontró la categoría, ajustar precios adicionales
+        if (selectedCategory) {
+            const adicional = parseFloat(selectedCategory.adicional);
+            for (const product of productosConPrecios) {
+                if (product.categoria === categoryName) {
+                    product.precio += product.multiplicador * adicional;
+                }
+            }
         }
+
+        // Respuesta con datos paginados
+        res.json({
+            message: "Productos paginados",
+            status: "success",
+            total: totalProducts,
+            data: productosConPrecios,
+        });
+    } catch (error) {
+        console.error("Error en /paginate:", error.message);
+        res.status(500).json({ error: error.message });
     }
 });
 
