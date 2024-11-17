@@ -88,18 +88,20 @@ router.get("/name", async (req, res) => {
 
         // ----------------------------------------
 
-        selectedCategory = await category.findOne({
-            nombre: productosConPrecios[0].categoria,
-        });
+        console.log(productosConPrecios);
 
-        for (let category of selectedCategory) {
-            let adicional = parseFloat(category.adicional);
-            for (const product of productosConPrecios) {
-                if (product.categoria === category.nombre) {
-                    product.precio += product.multiplicador * adicional;
-                }
-            }
-        }
+        // categories = await category.findOne({
+        //     nombre: productosConPrecios[0].categoria,
+        // });
+
+        // for (let category of categories) {
+        //     let adicional = parseFloat(category.adicional);
+        //     for (const product of productosConPrecios) {
+        //         if (product.categoria === category.nombre) {
+        //             product.precio += product.multiplicador * adicional;
+        //         }
+        //     }
+        // }
 
         res.json(productosConPrecios);
     } catch (error) {
