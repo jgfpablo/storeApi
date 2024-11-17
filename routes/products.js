@@ -143,11 +143,65 @@ router.get("/name", async (req, res) => {
 });
 
 //productos paginados
+// router.get("/search", async (req, res) => {
+//     const name = req.query.name;
+//     const start = parseInt(req.query.start) || 0; //indice
+//     const limit = parseInt(req.query.limit) || 1; //limit
+//     try {
+//         const products = await Product.find({
+//             nombre: { $regex: name, $options: "i" },
+//         })
+//             .skip(start)
+//             .limit(limit);
+
+//         const totalProducts = await Product.countDocuments({
+//             nombre: { $regex: name, $options: "i" },
+//         })
+//             .skip(start)
+//             .limit(limit);
+
+//         //  console.log(products);
+
+//         // const categories = await category.find();
+
+//         const productosConPrecios = await calcularPrecio(products);
+
+//            let categoria = await category.findOne({
+//                nombre: productosConPrecios[0]?.categoria,
+//            });
+
+//            if (!categoria) {
+//                return res
+//                    .status(404)
+//                    .json({ message: "Categoría no encontrada" });
+//            }
+
+//            // Actualiza los precios de los productos
+//            for (const product of productosConPrecios) {
+//                if (product.categoria === categoria.nombre) {
+//                    product.precio +=
+//                        product.multiplicador * parseFloat(categoria.adicional);
+//                }
+//            }
+
+//         res.json({
+//             message: "Productos paginados",
+//             status: "success",
+//             total: totalProducts, // Número total de productos
+//             data: productosConPrecios, // Productos paginados
+//         });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
 router.get("/search", async (req, res) => {
     const name = req.query.name;
-    const start = parseInt(req.query.start) || 0; //indice
-    const limit = parseInt(req.query.limit) || 1; //limit
+    const start = parseInt(req.query.start) || 0; // índice
+    const limit = parseInt(req.query.limit) || 1; // límite
+
     try {
+        // Filtrar productos por nombre con paginación
         const products = await Product.find({
             nombre: { $regex: name, $options: "i" },
         })
@@ -156,21 +210,39 @@ router.get("/search", async (req, res) => {
 
         const totalProducts = await Product.countDocuments({
             nombre: { $regex: name, $options: "i" },
-        })
-            .skip(start)
-            .limit(limit);
+        });
 
-        //  console.log(products);
+        if (products.length === 0) {
+            return res
+                .status(404)
+                .json({ message: "No se encontraron productos" });
+        }
 
-        const categories = await category.find();
-
+        // Calcular precios iniciales
         const productosConPrecios = await calcularPrecio(products);
 
+        // Obtener todas las categorías en una consulta
+        const categories = await category.find();
+
+        // Crear un mapa para buscar categorías rápidamente por nombre
+        const categoryMap = new Map();
+        for (const cat of categories) {
+            categoryMap.set(cat.nombre, parseFloat(cat.adicional)); // Convertir adicional a número
+        }
+
+        // Actualizar precios de los productos según su categoría
+        for (const product of productosConPrecios) {
+            const adicional = categoryMap.get(product.categoria); // Buscar adicional en el mapa
+            if (adicional) {
+                product.precio += product.multiplicador * adicional;
+            }
+        }
+
         res.json({
-            message: "Productos paginados",
+            message: "Productos encontrados y paginados",
             status: "success",
-            total: totalProducts, // Número total de productos
-            data: productosConPrecios, // Productos paginados
+            total: totalProducts, // Número total de productos que coinciden
+            data: productosConPrecios, // Productos procesados con precios actualizados
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
