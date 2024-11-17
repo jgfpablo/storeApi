@@ -143,6 +143,21 @@ router.get("/paginate", async (req, res) => {
 
             const productosConPrecios = await calcularPrecio(products);
 
+            selectedCategory = await category.findOne({
+                nombre: category,
+            });
+
+            console.log("CATEGORIA SELECCIONADA : " + selectedCategory);
+
+            if (selectedCategory) {
+                const adicional = parseFloat(selectedCategory.adicional);
+                for (const product of productosConPrecios) {
+                    if (product.categoria === categoryName) {
+                        product.precio += product.multiplicador * adicional;
+                    }
+                }
+            }
+
             res.json({
                 message: "Productos paginados",
                 status: "success",
