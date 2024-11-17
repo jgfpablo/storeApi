@@ -152,7 +152,7 @@ router.get("/paginate", async (req, res) => {
             if (selectedCategory) {
                 const adicional = parseFloat(selectedCategory.adicional);
                 for (const product of productosConPrecios) {
-                    if (product.categoria === categoryName) {
+                    if (product.categoria === selectedCategory.nombre) {
                         product.precio += product.multiplicador * adicional;
                     }
                 }
