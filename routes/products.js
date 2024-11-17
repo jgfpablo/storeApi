@@ -143,7 +143,7 @@ router.get("/paginate", async (req, res) => {
 
             const productosConPrecios = await calcularPrecio(products);
 
-            selectedCategory = await category.findOne({
+            selectedCategory = await category.find({
                 nombre: category,
             });
 
