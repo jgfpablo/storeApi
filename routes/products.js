@@ -145,6 +145,15 @@ router.get("/paginate", async (req, res) => {
 
             const productosConPrecios = await calcularPrecio(products);
 
+            for (let index = 0; index < productosConPrecios.length; index++) {
+                if (productosConPrecios[index].categoria == categoria.nombre) {
+                    productosConPrecios[index].precio +=
+                        categoria.adicional * productosConPrecios.multiplicador;
+                }
+            }
+
+            console.log(productosConPrecios);
+
             res.json({
                 message: "Productos paginados",
                 status: "success",
