@@ -127,10 +127,8 @@ router.get("/search", async (req, res) => {
 });
 
 router.get("/paginate", async (req, res) => {
-    console.log("product by paginate");
-
-    const start = parseInt(req.query.start) || 0; //indice
-    const limit = parseInt(req.query.limit) || 1; //limit
+    const start = parseInt(req.query.start);
+    const limit = parseInt(req.query.limit);
     const category = req.query.category;
 
     if (category) {
@@ -140,7 +138,7 @@ router.get("/paginate", async (req, res) => {
                 .limit(limit);
 
             const totalProducts = await Product.countDocuments({
-                categoria: category, // Asegúrate de que el campo se llame 'categoria'
+                categoria: category,
             });
 
             const productosConPrecios = await calcularPrecio(products);
@@ -148,8 +146,8 @@ router.get("/paginate", async (req, res) => {
             res.json({
                 message: "Productos paginados",
                 status: "success",
-                total: totalProducts, // Número total de productos
-                data: productosConPrecios, // Productos paginados
+                total: totalProducts,
+                data: productosConPrecios,
             });
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -165,8 +163,8 @@ router.get("/paginate", async (req, res) => {
             res.json({
                 message: "Productos paginados",
                 status: "success",
-                total: totalProducts, // Número total de productos
-                data: productosConPrecios, // Productos paginados
+                total: totalProducts,
+                data: productosConPrecios,
             });
         } catch (error) {
             res.status(500).json({ error: error.message });
