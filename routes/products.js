@@ -161,6 +161,9 @@ router.get("/paginate", async (req, res) => {
                 }
             }
 
+            console.log(productosConPrecios);
+            console.log(categories);
+
             //   ---------------------------
 
             res.json({
