@@ -78,27 +78,61 @@ router.get("/", async (req, res) => {
 });
 
 //product by name
+// router.get("/name", async (req, res) => {
+//     console.log("product by namee");
+
+//     const name = req.query.name;
+//     try {
+//         const products = await Product.find({ nombre: name });
+//         const productosConPrecios = await calcularPrecio(products);
+
+//         // ----------------------------------------
+
+//         // console.log(productosConPrecios);
+
+//         let categoria = await category.find({
+//             nombre: productosConPrecios.categoria,
+//         });
+
+//         let adicional = parseFloat(categoria[0].adicional);
+//         for (const product of productosConPrecios) {
+//             if (product.categoria === categoria.nombre) {
+//                 product.precio += product.multiplicador * adicional;
+//             }
+//         }
+
+//         res.json(productosConPrecios);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+
 router.get("/name", async (req, res) => {
-    console.log("product by namee");
+    console.log("product by name");
 
     const name = req.query.name;
     try {
         const products = await Product.find({ nombre: name });
+        if (!products.length) {
+            return res.status(404).json({ message: "Producto no encontrado" });
+        }
+
         const productosConPrecios = await calcularPrecio(products);
 
-        // ----------------------------------------
-
-        console.log(productosConPrecios);
-
-        let categoria = await category.find({
-            nombre: productosConPrecios.categoria,
+        // Obtén la categoría del primer producto
+        let categoria = await category.findOne({
+            nombre: productosConPrecios[0]?.categoria,
         });
-        console.log(categoria);
 
-        let adicional = parseFloat(categoria[0].adicional);
+        if (!categoria) {
+            return res.status(404).json({ message: "Categoría no encontrada" });
+        }
+
+        // Actualiza los precios de los productos
         for (const product of productosConPrecios) {
             if (product.categoria === categoria.nombre) {
-                product.precio += product.multiplicador * adicional;
+                product.precio +=
+                    product.multiplicador * parseFloat(categoria.adicional);
             }
         }
 
