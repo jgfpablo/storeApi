@@ -93,6 +93,7 @@ router.get("/name", async (req, res) => {
         let categoria = await category.findOne({
             nombre: productosConPrecios.categoria,
         });
+        console.log(categoria);
 
         let adicional = parseFloat(categoria.adicional);
         for (const product of productosConPrecios) {
