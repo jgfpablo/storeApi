@@ -69,7 +69,7 @@ router.put("/updateCategory", authenticateToken, async (req, res) => {
         // Buscar el filamento por su color y actualizarlo
         const updateCategory = await Category.findOneAndUpdate(
             { nombre: category.nombre }, // Condición de búsqueda correcta
-            categoy, // Datos a actualizar
+            category, // Datos a actualiza
             { new: true } // Retorna el filamento actualizado
         );
 
