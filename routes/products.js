@@ -4,7 +4,7 @@ const Product = require("../models/product");
 const authenticateToken = require("../middlewares/authToken");
 const { calcularPrecio } = require("../utils/products");
 const product = require("../models/product");
-const category = require("../models/category");
+const Category = require("../models/category");
 
 //Funcion anadir producto
 router.post("/product", authenticateToken, async (req, res) => {
@@ -143,7 +143,7 @@ router.get("/paginate", async (req, res) => {
 
             const productosConPrecios = await calcularPrecio(products);
 
-            selectedCategory = await category.find({
+            selectedCategory = await Category.findOne({
                 nombre: category,
             });
 
