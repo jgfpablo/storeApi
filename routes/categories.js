@@ -55,4 +55,43 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.put("/updateCategory", authenticateToken, async (req, res) => {
+    try {
+        // Obtener el filamento desde el cuerpo de la solicitud
+        const { category } = req.body;
+
+        if (!category || !category.nombre) {
+            return res.status(400).json({
+                error: "El campo 'nombre' es obligatorio para actualizar el filamento",
+            });
+        }
+
+        // Buscar el filamento por su color y actualizarlo
+        const updateCategory = await Category.findOneAndUpdate(
+            { nombre: category.nombre }, // Condición de búsqueda correcta
+            categoy, // Datos a actualizar
+            { new: true } // Retorna el filamento actualizado
+        );
+
+        // Si no se encuentra el filamento
+        if (!updateCategory) {
+            return res.status(404).json({
+                error: "categoria no encontrado",
+            });
+        }
+
+        // Responder con el filamento actualizado
+        res.json({
+            alert: "Categoria actualizado exitosamente",
+            status: "success",
+            data: updateCategory,
+        });
+    } catch (error) {
+        // Manejo de errores
+        res.status(500).json({
+            error: `Error al actualizar el categoria: ${error.message}`,
+            status: "failure",
+        });
+    }
+});
 module.exports = router;
