@@ -108,9 +108,9 @@ router.get("/", async (req, res) => {
 // });
 
 router.get("/name", async (req, res) => {
-    console.log("product by name");
-
     const name = req.query.name;
+    console.log("product by name" + name);
+
     try {
         const products = await Product.find({ nombre: name });
         if (!products.length) {
