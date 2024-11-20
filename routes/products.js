@@ -257,6 +257,7 @@ router.get("/paginate", async (req, res) => {
     if (category) {
         try {
             const products = await Product.find({ categoria: category })
+                .sort({ _id: -1 })
                 .skip(start)
                 .limit(limit);
 
@@ -294,7 +295,10 @@ router.get("/paginate", async (req, res) => {
         try {
             const categories = await Category.find();
 
-            const products = await Product.find().skip(start).limit(limit);
+            const products = await Product.find()
+                .sort({ _id: -1 })
+                .skip(start)
+                .limit(limit);
 
             const totalProducts = await Product.countDocuments();
 
