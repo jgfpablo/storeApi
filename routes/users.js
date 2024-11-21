@@ -5,9 +5,8 @@ const User = require("../models/user");
 const router = express.Router();
 const authenticateToken = require("../middlewares/authToken"); // Middleware de autenticación
 
-router.post("/register", async (req, res) => {
-    // router.post("/register", authenticateToken, async (req, res) => {
-    //router.post("/register", async (req, res) => {
+// router.post("/register", async (req, res) => {
+router.post("/register", authenticateToken, async (req, res) => {
     const { username, password } = req.body;
     try {
         const existingUser = await User.findOne({ username });
